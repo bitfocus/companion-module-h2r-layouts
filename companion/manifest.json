@@ -1,0 +1,25 @@
+{
+	"id": "h2r-layouts",
+	"name": "H2R Layouts",
+	"shortname": "H2R Layouts",
+	"description": "Control H2R Layouts (the app)",
+	"version": "0.0.0",
+	"license": "MIT",
+	"repository": "git+https://github.com/bitfocus/companion-module-h2r-layouts.git",
+	"bugs": "https://github.com/bitfocus/companion-module-h2r-layouts/issues",
+	"maintainers": [
+		{
+			"name": "John Barker"
+		}
+	],
+	"legacyIds": [],
+	"runtime": {
+		"type": "node18",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../main.js"
+	},
+	"manufacturer": "Here to Record",
+	"products": ["H2R Layouts"],
+	"keywords": ["H2R Layouts", "Here to Record"]
+}
