@@ -4,22 +4,7 @@ import { upgradeScripts } from './upgrade.js'
 import { _initPresets, _updatePresets } from './src/presets.js'
 import _initActions from './src/actions.js'
 import _initFeedbacks from './src/feedbacks.js'
-
-let variableValues = {
-	last_data_received: Date.now(),
-	layouts_count: undefined,
-}
-
-let variables = [
-	{
-		variableId: 'last_data_received',
-		name: `Last time data was received`,
-	},
-	{
-		variableId: 'layouts_count',
-		name: `Total number of layouts`,
-	},
-]
+import { variables, variableValues } from './src/variables.js'
 
 class WebsocketInstance extends InstanceBase {
 	isInitialized = false
@@ -33,7 +18,6 @@ class WebsocketInstance extends InstanceBase {
 		this.initWebSocket()
 		this.isInitialized = true
 		this.initActions()
-		this.initFeedbacks()
 		this.initFeedbacks()
 		this.subscribeFeedbacks()
 		this.initPresets()
@@ -57,31 +41,6 @@ class WebsocketInstance extends InstanceBase {
 		this.config = config
 
 		if (oldconfig['url'] !== config['url']) this.initWebSocket()
-	}
-
-	updateVariables(callerId = null) {
-		let variables = new Set()
-		let defaultValues = {}
-		this.subscriptions.forEach((subscription, subscriptionId) => {
-			if (!subscription.variableName.match(/^[-a-zA-Z0-9_]+$/)) {
-				return
-			}
-			variables.add(subscription.variableName)
-			if (callerId === null || callerId === subscriptionId) {
-				defaultValues[subscription.variableName] = ''
-			}
-		})
-		let variableDefinitions = [
-			{ name: 'Timestamp when last data was received', variableId: 'last_data_received' },
-			{ name: 'Count of all the layouts', variableId: 'layouts_count' },
-		]
-		variables.forEach((variable) => {
-			variableDefinitions.push({
-				name: variable,
-				variableId: variable,
-			})
-		})
-		this.setVariableDefinitions(variableDefinitions)
 	}
 
 	maybeReconnect() {
@@ -172,7 +131,19 @@ class WebsocketInstance extends InstanceBase {
 			this.setPresetDefinitions(presets)
 			this.log('debug', `layouts_updated: ${msgValue.data.count}`)
 		}
+		
+		if (msgValue.type === 'broadcast' && msgValue.data.type === 'connections_updated') {
+			// ATEM ANIMATE
+			variableValues['atem_animate'] = msgValue.data.data.ATEM.animate === true ? 'enabled' : 'disabled'
+			this.checkFeedbacks('atem_animate')
+			variableValues['atem_animate_easing'] = msgValue.data.data.ATEM.easing
+			variableValues['atem_animate_speed'] = msgValue.data.data.ATEM.steps
+			variableValues['atem_animate_supersource_index'] = msgValue.data.data.ATEM.superSourceIndex
 
+			this.log('debug', `connections_updated: ${JSON.stringify(msgValue.data.data)}`)
+		}
+
+		variableValues['last_data_received'] = Date.now()
 		this.setVariableDefinitions(variables)
 		this.setVariableValues(variableValues)
 	}
@@ -215,6 +186,7 @@ class WebsocketInstance extends InstanceBase {
 
 	initFeedbacks() {
 		const feedbacks = _initFeedbacks(this)
+		this.log('debug', 'FEEDBACKS RERUNNING')
 		this.setFeedbackDefinitions(feedbacks)
 	}
 
@@ -228,6 +200,7 @@ class WebsocketInstance extends InstanceBase {
 		const actions = _initActions(this)
 		this.setActionDefinitions(actions)
 	}
+
 }
 
 runEntrypoint(WebsocketInstance, upgradeScripts)
