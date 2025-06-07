@@ -119,7 +119,6 @@ class WebsocketInstance extends InstanceBase {
 			msgValue.data.data.forEach((layout, index) => {
 				const layoutName = `layout_${index + 1}_name`
 
-				// NAME OF THE LAYOUT
 				variables.push({
 					variableId: layoutName,
 					name: `Layout ${index + 1} Name`,
@@ -133,7 +132,6 @@ class WebsocketInstance extends InstanceBase {
 		}
 
 		if (msgValue.type === 'broadcast' && msgValue.data.type === 'connections_updated') {
-			// ATEM ANIMATE
 			variableValues['atem_animate'] = msgValue.data.data.ATEM.animate === true ? 'enabled' : 'disabled'
 			this.checkFeedbacks('atem_animate')
 			variableValues['atem_animate_easing'] = msgValue.data.data.ATEM.easing
