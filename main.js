@@ -131,7 +131,7 @@ class WebsocketInstance extends InstanceBase {
 			this.setPresetDefinitions(presets)
 			this.log('debug', `layouts_updated: ${msgValue.data.count}`)
 		}
-		
+
 		if (msgValue.type === 'broadcast' && msgValue.data.type === 'connections_updated') {
 			// ATEM ANIMATE
 			variableValues['atem_animate'] = msgValue.data.data.ATEM.animate === true ? 'enabled' : 'disabled'
@@ -186,7 +186,6 @@ class WebsocketInstance extends InstanceBase {
 
 	initFeedbacks() {
 		const feedbacks = _initFeedbacks(this)
-		this.log('debug', 'FEEDBACKS RERUNNING')
 		this.setFeedbackDefinitions(feedbacks)
 	}
 
@@ -200,7 +199,6 @@ class WebsocketInstance extends InstanceBase {
 		const actions = _initActions(this)
 		this.setActionDefinitions(actions)
 	}
-
 }
 
 runEntrypoint(WebsocketInstance, upgradeScripts)
