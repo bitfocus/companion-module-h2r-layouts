@@ -1,11 +1,12 @@
 {
 	"name": "companion-module-h2r-layouts",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"format": "prettier -w ."
+		"format": "prettier -w .",
+		"build": "yarn companion-module-build"
 	},
 	"license": "MIT",
 	"dependencies": {

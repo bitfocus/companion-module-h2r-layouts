@@ -57,6 +57,8 @@ export default function _initActions(self) {
 			callback: async (action, context) => {
 				const number = await context.parseVariablesInString(action.options.number)
 
+				if(!number) return self.log('debug', `[run] "Number" is not defined.`)
+
 				return new Promise((resolve, reject) => {
 					self.ws.send(
 						JSON.stringify({ id: generateId(), action: 'layouts/run', params: { number: number } }),
@@ -91,6 +93,8 @@ export default function _initActions(self) {
 			],
 			callback: async (action, context) => {
 				const number = await context.parseVariablesInString(action.options.number)
+
+				if(!number) return self.log('debug', `[run_to_full] "Number" is not defined.`)
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(
@@ -144,11 +148,10 @@ export default function _initActions(self) {
 						{ id: 'disable', label: 'Disable' },
 					],
 					default: 'enable',
-					useVariables: true,
 				},
 			],
-			callback: async (action, context) => {
-				const boolean = await context.parseVariablesInString(action.options.boolean)
+			callback: async (action) => {
+				const boolean = action.options.boolean
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(JSON.stringify({ id: generateId(), action: `connections/atem/animate/${boolean}` }), (err) => {
@@ -181,11 +184,10 @@ export default function _initActions(self) {
 						{ id: 'easeInOutQuad', label: 'Ease In Out' },
 					],
 					default: 'easeInOutQuad',
-					useVariables: true,
 				},
 			],
-			callback: async (action, context) => {
-				const type = await context.parseVariablesInString(action.options.ease)
+			callback: async (action) => {
+				const type = action.options.ease
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(
@@ -221,11 +223,10 @@ export default function _initActions(self) {
 						{ id: '10', label: 'Extra fast' },
 					],
 					default: '20',
-					useVariables: true,
 				},
 			],
-			callback: async (action, context) => {
-				const speed = await context.parseVariablesInString(action.options.speed)
+			callback: async (action) => {
+				const speed = action.options.speed
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(
@@ -259,11 +260,10 @@ export default function _initActions(self) {
 						{ id: '1', label: 'SuperSource 2' },
 					],
 					default: '0',
-					useVariables: true,
 				},
 			],
-			callback: async (action, context) => {
-				const index = await context.parseVariablesInString(action.options.index)
+			callback: async (action) => {
+				const index = action.options.index
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(
@@ -299,9 +299,7 @@ export default function _initActions(self) {
 			callback: async (action, context) => {
 				const value = await context.parseVariablesInString(action.options.data)
 
-				if (self.config.debug_messages) {
-					self.log('debug', `Sending message: ${value}`)
-				}
+				if(!value) return self.log('debug', `[send_command] "Data" is not defined.`)
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(JSON.stringify(value), (err) => {

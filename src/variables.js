@@ -1,4 +1,4 @@
-export let variableValues = {
+export let _defaultVariableValues = {
 	last_data_received: Date.now(),
 	layouts_count: undefined,
 	atem_animate: undefined,
@@ -7,7 +7,7 @@ export let variableValues = {
 	atem_animate_supersource_index: undefined,
 }
 
-export let variables = [
+export let _defaultVariables = [
 	{
 		variableId: 'last_data_received',
 		name: `Last time data was received`,

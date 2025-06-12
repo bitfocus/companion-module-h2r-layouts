@@ -4,12 +4,11 @@ import { upgradeScripts } from './upgrade.js'
 import { _initPresets, _updatePresets } from './src/presets.js'
 import _initActions from './src/actions.js'
 import _initFeedbacks from './src/feedbacks.js'
-import { variables, variableValues } from './src/variables.js'
+import { _defaultVariables, _defaultVariableValues } from './src/variables.js'
 
-class WebsocketInstance extends InstanceBase {
+class H2RLayoutsInstance extends InstanceBase {
 	isInitialized = false
 
-	subscriptions = new Map()
 	wsRegex = '^wss?:\\/\\/([\\da-z\\.-]+)(:\\d{1,5})?(?:\\/(.*))?$'
 
 	async init(config) {
@@ -21,6 +20,8 @@ class WebsocketInstance extends InstanceBase {
 		this.initFeedbacks()
 		this.subscribeFeedbacks()
 		this.initPresets()
+		this.variables = _defaultVariables
+		this.variableValues = _defaultVariableValues
 	}
 
 	async destroy() {
@@ -113,17 +114,17 @@ class WebsocketInstance extends InstanceBase {
 
 		if (msgValue.type === 'broadcast' && msgValue.data.type === 'layouts_updated') {
 			// Update when layouts change
-			variableValues['layouts_count'] = msgValue.data.count
+			this.variableValues['layouts_count'] = msgValue.data.count
 
 			// Loop through all layouts
 			msgValue.data.data.forEach((layout, index) => {
 				const layoutName = `layout_${index + 1}_name`
 
-				variables.push({
+				this.variables.push({
 					variableId: layoutName,
 					name: `Layout ${index + 1} Name`,
 				})
-				return (variableValues[layoutName] = layout.name)
+				return (this.variableValues[layoutName] = layout.name)
 			})
 
 			const presets = _updatePresets(this, msgValue.data.data)
@@ -132,18 +133,18 @@ class WebsocketInstance extends InstanceBase {
 		}
 
 		if (msgValue.type === 'broadcast' && msgValue.data.type === 'connections_updated') {
-			variableValues['atem_animate'] = msgValue.data.data.ATEM.animate === true ? 'enabled' : 'disabled'
+			this.variableValues['atem_animate'] = msgValue.data.data.ATEM.animate === true ? 'enabled' : 'disabled'
 			this.checkFeedbacks('atem_animate')
-			variableValues['atem_animate_easing'] = msgValue.data.data.ATEM.easing
-			variableValues['atem_animate_speed'] = msgValue.data.data.ATEM.steps
-			variableValues['atem_animate_supersource_index'] = msgValue.data.data.ATEM.superSourceIndex
+			this.variableValues['atem_animate_easing'] = msgValue.data.data.ATEM.easing
+			this.variableValues['atem_animate_speed'] = msgValue.data.data.ATEM.steps
+			this.variableValues['atem_animate_supersource_index'] = msgValue.data.data.ATEM.superSourceIndex
 
 			this.log('debug', `connections_updated: ${JSON.stringify(msgValue.data.data)}`)
 		}
 
-		variableValues['last_data_received'] = Date.now()
-		this.setVariableDefinitions(variables)
-		this.setVariableValues(variableValues)
+		this.variableValues['last_data_received'] = Date.now()
+		this.setVariableDefinitions(this.variables)
+		this.setVariableValues(this.variableValues)
 	}
 
 	getConfigFields() {
@@ -199,4 +200,4 @@ class WebsocketInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(WebsocketInstance, upgradeScripts)
+runEntrypoint(H2RLayoutsInstance, upgradeScripts)
