@@ -57,7 +57,7 @@ export default function _initActions(self) {
 			callback: async (action, context) => {
 				const number = await context.parseVariablesInString(action.options.number)
 
-				if(!number) return self.log('debug', `[run] "Number" is not defined.`)
+				if (!number) return self.log('debug', `[run] "Number" is not defined.`)
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(
@@ -94,7 +94,7 @@ export default function _initActions(self) {
 			callback: async (action, context) => {
 				const number = await context.parseVariablesInString(action.options.number)
 
-				if(!number) return self.log('debug', `[run_to_full] "Number" is not defined.`)
+				if (!number) return self.log('debug', `[run_to_full] "Number" is not defined.`)
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(
@@ -299,7 +299,7 @@ export default function _initActions(self) {
 			callback: async (action, context) => {
 				const value = await context.parseVariablesInString(action.options.data)
 
-				if(!value) return self.log('debug', `[send_command] "Data" is not defined.`)
+				if (!value) return self.log('debug', `[send_command] "Data" is not defined.`)
 
 				return new Promise((resolve, reject) => {
 					self.ws.send(JSON.stringify(value), (err) => {

@@ -1,5 +1,4 @@
 import { combineRgb } from '@companion-module/base'
-import layoutToPngBase64 from '../utils/layoutToPngBase64.js'
 import { toFull1, toFull2, toFull3, toFull4 } from '../utils/defaultLayouts.js'
 import { PRESET_CATEGORIES } from '../utils/consts.js'
 
@@ -85,7 +84,7 @@ export const _initPresets = (_this) => {
 				size: '14',
 				color: 'transparent',
 				bgcolor: '#1a1a1a',
-				png64: layoutToPngBase64(layout.boxes),
+				png64: layout.previewImage,
 				pngalignment: 'center:center',
 			},
 			steps: [
@@ -145,7 +144,7 @@ export const _updatePresets = (_this, layouts) => {
 				size: '14',
 				color: 'transparent',
 				bgcolor: '#1a1a1a',
-				png64: layoutToPngBase64(layout.boxes),
+				png64: layout.previewImage,
 				pngalignment: 'center:center',
 			},
 			steps: [
