@@ -142,6 +142,16 @@ class H2RLayoutsInstance extends InstanceBase {
 			this.log('debug', `connections_updated: ${JSON.stringify(msgValue.data.data)}`)
 		}
 
+		if (msgValue.type === 'broadcast' && msgValue.data.type === 'live_data') {
+			this.variableValues['last_recalled'] = msgValue.data.data.lastRecalled
+			this.variableValues['last_recalled_by_name'] = msgValue.data.data.lastRecalledByName
+
+			this.checkFeedbacks('last_recalled')
+			this.checkFeedbacks('last_recalled_by_name')
+
+			this.log('debug', `live_data: ${JSON.stringify(msgValue.data.data)}`)
+		}
+
 		this.variableValues['last_data_received'] = Date.now()
 		this.setVariableDefinitions(this.variables)
 		this.setVariableValues(this.variableValues)

@@ -98,7 +98,17 @@ export const _initPresets = (_this) => {
 					up: [],
 				},
 			],
-			feedbacks: [],
+			feedbacks: [
+				{
+					feedbackId: 'last_recalled',
+					options: {
+						layoutId: layout.id,
+					},
+					style: {
+						bgcolor: combineRgb(4, 120, 87),
+					},
+				},
+			],
 		}
 
 		// NAME
@@ -123,7 +133,17 @@ export const _initPresets = (_this) => {
 					up: [],
 				},
 			],
-			feedbacks: [],
+			feedbacks: [
+				{
+					feedbackId: 'last_recalled',
+					options: {
+						layoutId: layout.id,
+					},
+					style: {
+						bgcolor: combineRgb(4, 120, 87),
+					},
+				},
+			],
 		})
 	})
 
@@ -158,7 +178,17 @@ export const _updatePresets = (_this, layouts) => {
 					up: [],
 				},
 			],
-			feedbacks: [],
+			feedbacks: [
+				{
+					feedbackId: 'last_recalled',
+					options: {
+						layoutId: layout.id,
+					},
+					style: {
+						bgcolor: combineRgb(4, 120, 87),
+					},
+				},
+			],
 		}
 		// LAYOUTS BY NAME
 		return (dynamicPresets[`layout_${index + 1}_by_name`] = {
@@ -182,7 +212,17 @@ export const _updatePresets = (_this, layouts) => {
 					up: [],
 				},
 			],
-			feedbacks: [],
+			feedbacks: [
+				{
+					feedbackId: 'last_recalled',
+					options: {
+						layoutId: layout.id,
+					},
+					style: {
+						bgcolor: combineRgb(4, 120, 87),
+					},
+				},
+			],
 		})
 	})
 

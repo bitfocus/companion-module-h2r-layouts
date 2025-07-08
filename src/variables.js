@@ -5,6 +5,8 @@ export let _defaultVariableValues = {
 	atem_animate_easing: undefined,
 	atem_animate_speed: undefined,
 	atem_animate_supersource_index: undefined,
+	last_recalled: undefined,
+	last_recalled_by_name: undefined,
 }
 
 export let _defaultVariables = [
@@ -31,5 +33,13 @@ export let _defaultVariables = [
 	{
 		name: 'ATEM: SuperSource index',
 		variableId: 'atem_animate_supersource_index',
+	},
+	{
+		name: 'Last Recalled layout (ID)',
+		variableId: 'last_recalled',
+	},
+	{
+		name: 'Last Recalled layout (Name)',
+		variableId: 'last_recalled_by_name',
 	},
 ]

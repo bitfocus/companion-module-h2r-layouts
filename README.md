@@ -13,6 +13,11 @@ See HELP.md and LICENSE
 
 ## Changelog
 
+**v1.1.0**
+
+- New: Add `last_recalled` and `last_recalled_by_name` variables keeping track of the most recent layout recalled.
+- New: Feedback added to update the button backgrounds based on the latest recalled layout.
+
 **v1.0.0**
 
 Initial release 🙌

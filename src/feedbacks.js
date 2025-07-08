@@ -32,5 +32,30 @@ export default function _initFeedbacks(self) {
 				}
 			},
 		},
+		last_recalled: {
+			type: 'boolean', // Feedbacks can either a simple boolean, or can be an 'advanced' style change (until recently, all feedbacks were 'advanced')
+			name: 'Last recalled layout',
+			defaultStyle: {
+				bgcolor: combineRgb(4, 120, 87),
+			},
+			options: [
+				{
+					type: 'textinput',
+					label: 'Layout ID',
+					id: 'layoutId',
+					default: '',
+				},
+			],
+			// options is how the user can choose the condition the feedback activates for
+			callback: function (feedback) {
+				let currentValue = self.variableValues.last_recalled
+				// This callback will be called whenever companion wants to check if this feedback is 'active' and should affect the button style
+				if (currentValue === feedback.options.layoutId) {
+					return true
+				} else {
+					return false
+				}
+			},
+		},
 	}
 }
