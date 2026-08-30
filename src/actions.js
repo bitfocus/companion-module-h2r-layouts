@@ -4,7 +4,7 @@ export default function _initActions(self) {
 	return {
 		health: {
 			name: 'Health',
-			callback: async (action, context) => {
+			callback: async (_action, _context) => {
 				return new Promise((resolve, reject) => {
 					self.ws.send(JSON.stringify({ id: generateId(), action: 'health' }), (err) => {
 						if (err) {
@@ -24,7 +24,7 @@ export default function _initActions(self) {
 		},
 		get_all_layouts: {
 			name: 'Get all layouts',
-			callback: async (action, context) => {
+			callback: async (_action, _context) => {
 				return new Promise((resolve, reject) => {
 					self.ws.send(JSON.stringify({ id: generateId(), action: 'layouts/get-all' }), (err) => {
 						if (err) {
@@ -118,7 +118,7 @@ export default function _initActions(self) {
 		},
 		get_all_connections: {
 			name: 'Get all connections',
-			callback: async (action, context) => {
+			callback: async (_action, _context) => {
 				return new Promise((resolve, reject) => {
 					self.ws.send(JSON.stringify({ id: generateId(), action: 'connections/get-all' }), (err) => {
 						if (err) {
@@ -268,6 +268,80 @@ export default function _initActions(self) {
 				return new Promise((resolve, reject) => {
 					self.ws.send(
 						JSON.stringify({ id: generateId(), action: 'connections/atem/supersource/index', params: { index } }),
+						(err) => {
+							if (err) {
+								if (self.config.debug_messages) {
+									self.log('error', `Sending message failed.`)
+								}
+								reject(err)
+							} else {
+								if (self.config.debug_messages) {
+									self.log('debug', `Message sent successfully.`)
+								}
+								resolve()
+							}
+						},
+					)
+				})
+			},
+		},
+		vmix_input: {
+			name: 'vMix connection: Send layouts to input',
+			options: [
+				{
+					type: 'textinput',
+					label: 'vMix input number',
+					id: 'number',
+					regex: '/^[0-9]+$/',
+					default: '1',
+					useVariables: true,
+				},
+			],
+			callback: async (action, context) => {
+				const number = await context.parseVariablesInString(action.options.number)
+
+				if (!number) return self.log('debug', `[vmix_input] "Number" is not defined.`)
+
+				return new Promise((resolve, reject) => {
+					self.ws.send(
+						JSON.stringify({ id: generateId(), action: 'connections/vmix/input', params: { number: number } }),
+						(err) => {
+							if (err) {
+								if (self.config.debug_messages) {
+									self.log('error', `Sending message failed.`)
+								}
+								reject(err)
+							} else {
+								if (self.config.debug_messages) {
+									self.log('debug', `Message sent successfully.`)
+								}
+								resolve()
+							}
+						},
+					)
+				})
+			},
+		},
+		vmix_protect_on_air: {
+			name: 'vMix connection: Block changes while on air',
+			options: [
+				{
+					type: 'dropdown',
+					id: 'boolean',
+					label: 'Refuse to change the vMix input while it is on program output',
+					choices: [
+						{ id: 'enable', label: 'Enable' },
+						{ id: 'disable', label: 'Disable' },
+					],
+					default: 'disable',
+				},
+			],
+			callback: async (action) => {
+				const boolean = action.options.boolean
+
+				return new Promise((resolve, reject) => {
+					self.ws.send(
+						JSON.stringify({ id: generateId(), action: `connections/vmix/protect-on-air/${boolean}` }),
 						(err) => {
 							if (err) {
 								if (self.config.debug_messages) {

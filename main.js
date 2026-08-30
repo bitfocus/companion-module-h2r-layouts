@@ -107,7 +107,7 @@ class H2RLayoutsInstance extends InstanceBase {
 		} else {
 			try {
 				msgValue = JSON.parse(data)
-			} catch (e) {
+			} catch {
 				msgValue = data
 			}
 		}
@@ -133,11 +133,20 @@ class H2RLayoutsInstance extends InstanceBase {
 		}
 
 		if (msgValue.type === 'broadcast' && msgValue.data.type === 'connections_updated') {
-			this.variableValues['atem_animate'] = msgValue.data.data.ATEM.animate === true ? 'enabled' : 'disabled'
-			this.checkFeedbacks('atem_animate')
-			this.variableValues['atem_animate_easing'] = msgValue.data.data.ATEM.easing
-			this.variableValues['atem_animate_speed'] = msgValue.data.data.ATEM.steps
-			this.variableValues['atem_animate_supersource_index'] = msgValue.data.data.ATEM.superSourceIndex
+			const atem = msgValue.data.data?.ATEM
+			if (atem) {
+				this.variableValues['atem_animate'] = atem.animate === true ? 'enabled' : 'disabled'
+				this.checkFeedbacks('atem_animate')
+				this.variableValues['atem_animate_easing'] = atem.easing
+				this.variableValues['atem_animate_speed'] = atem.steps
+				this.variableValues['atem_animate_supersource_index'] = atem.superSourceIndex
+			}
+
+			const vmix = msgValue.data.data?.VMIX
+			if (vmix) {
+				this.variableValues['vmix_input'] = vmix.inputNumber
+				this.variableValues['vmix_protect_on_air'] = vmix.protectOnAir === true ? 'enabled' : 'disabled'
+			}
 
 			this.log('debug', `connections_updated: ${JSON.stringify(msgValue.data.data)}`)
 		}

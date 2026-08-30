@@ -13,6 +13,15 @@ See HELP.md and LICENSE
 
 ## Changelog
 
+**v1.2.0**
+
+- New: `vMix connection: Send layouts to input` action — sets which vMix input (MultiView / VirtualSet) layouts are recalled to.
+- New: `vMix connection: Block changes while on air` action — enable/disable the guard that refuses to change a vMix input while it is on program output.
+- New: `vmix_input` and `vmix_protect_on_air` variables.
+- Fix: A malformed `connections_updated` broadcast no longer throws when the ATEM connection is missing.
+
+Requires H2R Layouts 1.7.0 or newer for the vMix actions.
+
 **v1.1.0**
 
 - New: Add `last_recalled` and `last_recalled_by_name` variables keeping track of the most recent layout recalled.

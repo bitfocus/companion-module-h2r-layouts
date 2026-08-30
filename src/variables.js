@@ -7,6 +7,8 @@ export let _defaultVariableValues = {
 	atem_animate_supersource_index: undefined,
 	last_recalled: undefined,
 	last_recalled_by_name: undefined,
+	vmix_input: undefined,
+	vmix_protect_on_air: undefined,
 }
 
 export let _defaultVariables = [
@@ -33,6 +35,14 @@ export let _defaultVariables = [
 	{
 		name: 'ATEM: SuperSource index',
 		variableId: 'atem_animate_supersource_index',
+	},
+	{
+		name: 'vMix: Input layouts are sent to',
+		variableId: 'vmix_input',
+	},
+	{
+		name: 'vMix: Block changes while on air',
+		variableId: 'vmix_protect_on_air',
 	},
 	{
 		name: 'Last Recalled layout (ID)',
